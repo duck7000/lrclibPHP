@@ -11,7 +11,7 @@
 namespace Lyric;
 
 /**
- * Configuration class for musicBrainzPHP
+ * Configuration class for lrclibPHP
  * @author ed (github user: duck7000)
  */
 class Config
