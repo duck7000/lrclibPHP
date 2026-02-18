@@ -11,7 +11,8 @@ Quick Start
 * Include `bootstrap.php`.
 * Get some data
 
-Search For Title, person, tv, keyword, company and collection
+Search For lyrics<br><br>
+
 @parameters:
 string albumTitle
 string trackArtist (not the the album artist!)
