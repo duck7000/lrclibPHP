@@ -13,11 +13,12 @@ Quick Start
 
 Search For lyrics<br><br>
 
-@parameters:
-string albumTitle
-string trackArtist (not the the album artist!)
-string trackTitle
-string|int trackLength (in seconds)
+@parameters:<br><br>
+
+string albumTitle<br>
+string trackArtist (not the the album artist!)<br>
+string trackTitle<br>
+string|int trackLength (in seconds)<br>
 
 ```php
 $result = new \Lyric\Lyric();
