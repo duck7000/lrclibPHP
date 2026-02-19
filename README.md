@@ -11,9 +11,9 @@ Quick Start
 * Include `bootstrap.php`.
 * Get some data
 
-Search For lyrics<br><br>
+Search For lyrics<br>
 
-@parameters:<br><br>
+@parameters:<br>
 
 string albumTitle<br>
 string trackArtist (not the the album artist!)<br>
