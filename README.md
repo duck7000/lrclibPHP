@@ -1,4 +1,4 @@
-TMDbAPIPHP
+lrclibPHP
 =======
 
 PHP library for retrieving lyrics from lrclib.net API.<br>
