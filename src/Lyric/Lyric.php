@@ -27,63 +27,88 @@ class Lyric extends MdbBase
 
     /**
      * Get lrclib song lyric data
-     * @param string $albumTitle release album title
      * @param string $trackArtist track artist (not the album artist!)
      * @param string $trackName track name
+     * @param string $albumTitle release album title
      * @param string $trackLength track length (in seconds)
+     * @note: $trackArtist and $trackName are mandatory, other parameters are optional
      * @return string lyric text or false
      */
     public function getLyric(
-        $albumTitle,
         $trackArtist,
         $trackName,
-        $trackLength)
+        $albumTitle = '',
+        $trackLength = '')
     {
+        $trackArtist = trim($trackArtist);
+        $trackName = trim($trackName);
+        $albumTitle = trim($albumTitle);
+        $trackLength = trim($trackLength);
+        
         if (!empty($trackArtist) && !empty($trackName)) {
-            $trackArtist = urlencode($trackArtist);
-            $trackName = urlencode($trackName);
-            $url = $this->config->baseApiUrl . '/get?';
-            $url .= 'artist_name=' . $trackArtist;
-            $url .= '&';
-            $url .= 'track_name=' . $trackName;
-            if (!empty($albumTitle)) {
-                $url .= '&';
-                $url .= 'album_name=' . urlencode($albumTitle);
-            }
-            if (!empty($trackLength)) {
-                $url .= '&';
-                $url .= 'duration=' . $trackLength;
-            }
+            $url = $this->buildUrl($trackArtist, $trackName, "get");
+            $urlPart = $this->buildUrlAdition($albumTitle, $trackLength);
 
             // First API call with all available parameters
-            $results = $this->api->exactMatchApiCall($url);
-
+            $results = $this->api->exactMatchApiCall($url . $urlPart);
             if ($results !== false) {
                 return $results;
             }
 
-            // If false, second API call with artist and trackname
-            $urlNoAlbum = $this->config->baseApiUrl . '/get?';
-            $urlNoAlbum .= 'artist_name=' . $trackArtist;
-            $urlNoAlbum .= '&';
-            $urlNoAlbum .= 'track_name=' . $trackName;
-            $resultsNoAlbum = $this->api->exactMatchApiCall($urlNoAlbum);
-            if ($resultsNoAlbum !== false) {
-                return $resultsNoAlbum;
+            // Second API call with artist and trackname
+            $noAlbumResults = $this->api->exactMatchApiCall($url);
+            if ($noAlbumResults !== false) {
+                return $noAlbumResults;
             }
 
-            // if still false third API call for a search
+            // Third API call for a search with artist and trackname
             if ($this->config->apiSearch === true) {
-                $searchUrl = $this->config->baseApiUrl . '/search?';
-                $searchUrl .= 'track_name=' . $trackName;
-                $searchUrl .= '&';
-                $searchUrl .= 'artist_name=' . $trackArtist;
-                $searchResults = $this->api->searchApiCall($searchUrl);
-                if ($searchResults !== false) {
-                    return $searchResults;
+                $noAlbumSearchUrl = $this->buildUrl($trackArtist, $trackName, "search");
+                $noAlbumSearchResults = $this->api->searchApiCall($noAlbumSearchUrl);
+                if ($noAlbumSearchResults !== false) {
+                    return $noAlbumSearchResults;
                 }
             }
         }
         return false;
+    }
+
+    /**
+     * Build first part of api call url
+     * @param string $trackArtist track artist (not the album artist!)
+     * @param string $trackName track name
+     * @param string $method e.g. get (for direct lookup), search (for search)
+     * @return string
+     */
+    private function buildUrl($trackArtist, $trackName, $method)
+    {
+        $getUrl = $this->config->baseApiUrl;
+        $getUrl .= '/';
+        $getUrl .= $method;
+        $getUrl .= '?';
+        $getUrl .= 'artist_name=' . urlencode($trackArtist);
+        $getUrl .= '&';
+        $getUrl .= 'track_name=' . urlencode($trackName);
+        return $getUrl;
+    }
+
+    /**
+     * Build second part of api call url
+     * @param string $albumTitle album title
+     * @param string $trackLength track length in seconds
+     * @return string
+     */
+    private function buildUrlAdition($albumTitle, $trackLength)
+    {
+        $urlPart = '';
+        if (!empty($albumTitle)) {
+            $urlPart .= '&';
+            $urlPart .= 'album_name=' . urlencode($albumTitle);
+        }
+        if (!empty($trackLength)) {
+            $urlPart .= '&';
+            $urlPart .= 'duration=' . $trackLength;
+        }
+        return $urlPart;
     }
 }

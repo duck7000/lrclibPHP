@@ -14,15 +14,16 @@ Quick Start
 Search For lyrics<br>
 
 @parameters:<br>
+@note: trackArtist and trackName are mandatory, rest is optional but will increase matching<br>
 
-string albumTitle<br>
 string trackArtist (not the the album artist!)<br>
-string trackTitle<br>
+string trackName<br>
+string albumTitle<br>
 string|int trackLength (in seconds)<br>
 
 ```php
 $result = new \Lyric\Lyric();
-print_r($result->getLyric("The Better Life", "3 doors down", "Kryptonite", "234"));
+print_r($result->getLyric("3 doors down", "Kryptonite", "The Better Life", "234"));
 ```
 
 Installation
@@ -35,7 +36,7 @@ Get the files with one of:
 * [Zip/Tar download]
 
 ### Requirements
-* PHP >= works from 8.0 - 8.4
+* PHP >= works from 8.0 - 8.5
 * PHP cURL extension
 * PHP json extension
 
