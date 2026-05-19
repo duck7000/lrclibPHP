@@ -25,6 +25,7 @@ string|int trackLength (in seconds)<br>
 $result = new \Lyric\Lyric();
 print_r($result->getLyric("3 doors down", "Kryptonite", "The Better Life", "234"));
 ```
+@result: string Lyric text or false (if nothing found)<br>
 
 Installation
 ============
