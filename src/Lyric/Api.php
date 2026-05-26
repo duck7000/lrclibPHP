@@ -83,6 +83,10 @@ class Api
         $searchData = $this->execRequest($searchUrl);
         if (is_array($searchData) && count($searchData) > 0) {
             if (isset($searchData[0]->plainLyrics) && $searchData[0]->plainLyrics != '') {
+                $pos = strrpos($searchData[0]->plainLyrics, ']');
+                if ($pos !== false) {
+                    return $this->removeCensoring(trim(substr($searchData[0]->plainLyrics, $pos + 1)));
+                }
                 return $this->removeCensoring($searchData[0]->plainLyrics);
             } elseif (isset($searchData[0]->instrumental) && $searchData[0]->instrumental === true) {
                 return 'Instrumental';
