@@ -17,9 +17,6 @@ namespace Lyric;
 class Api
 {
 
-    /**
-     * @var Config
-     */
     private $config;
 
     /**
@@ -34,9 +31,9 @@ class Api
     /**
      * Uncensor lyrics data
      * @param string $inputLyrics input censored lyrics text
-     * @return string uncensored lyrics text
+     * @return string
      */
-    private function removeCensoring($inputLyrics)
+    private function removeCensoring($inputLyrics): string
     {
         $replace = array(
             'f*ck' => 'fuck',
@@ -60,7 +57,7 @@ class Api
     /**
      * Get and process api call data
      * @param string $url api call url
-     * @return string if lyrics data found, false otherwise
+     * @return string|bool
      */
     public function exactMatchApiCall($url)
     {
@@ -76,7 +73,7 @@ class Api
     /**
      * Get and process api search call data (if there is no exact match)
      * @param string $searchUrl api call search url
-     * @return string if lyrics data found, false otherwise
+     * @return string|bool
      */
     public function searchApiCall($searchUrl)
     {
@@ -98,7 +95,8 @@ class Api
     /**
      * Execute request
      * @param string $url
-     * @return \stdClass
+     * @return object|bool
+     * @throws exception
      */
     public function execRequest($url)
     {
@@ -116,4 +114,5 @@ class Api
             }
         }
     }
+
 }

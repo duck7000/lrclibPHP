@@ -32,7 +32,7 @@ class Lyric extends MdbBase
      * @param string $albumTitle release album title
      * @param string $trackLength track length (in seconds)
      * @note: $trackArtist and $trackName are mandatory, other parameters are optional
-     * @return string lyric text or false
+     * @return string|bool
      */
     public function getLyric(
         $trackArtist,
@@ -48,19 +48,16 @@ class Lyric extends MdbBase
         if (!empty($trackArtist) && !empty($trackName)) {
             $url = $this->buildUrl($trackArtist, $trackName, "get");
             $urlPart = $this->buildUrlAdition($albumTitle, $trackLength);
-
             // First API call with all available parameters
             $results = $this->api->exactMatchApiCall($url . $urlPart);
             if ($results !== false) {
                 return $results;
             }
-
             // Second API call with artist and trackname
             $noAlbumResults = $this->api->exactMatchApiCall($url);
             if ($noAlbumResults !== false) {
                 return $noAlbumResults;
             }
-
             // Third API call for a search with artist and trackname
             if ($this->config->apiSearch === true) {
                 $noAlbumSearchUrl = $this->buildUrl($trackArtist, $trackName, "search");
@@ -80,7 +77,7 @@ class Lyric extends MdbBase
      * @param string $method e.g. get (for direct lookup), search (for search)
      * @return string
      */
-    private function buildUrl($trackArtist, $trackName, $method)
+    private function buildUrl($trackArtist, $trackName, $method): string
     {
         $getUrl = $this->config->baseApiUrl;
         $getUrl .= '/';
@@ -98,7 +95,7 @@ class Lyric extends MdbBase
      * @param string $trackLength track length in seconds
      * @return string
      */
-    private function buildUrlAdition($albumTitle, $trackLength)
+    private function buildUrlAdition($albumTitle, $trackLength): string
     {
         $urlPart = '';
         if (!empty($albumTitle)) {
@@ -111,4 +108,5 @@ class Lyric extends MdbBase
         }
         return $urlPart;
     }
+
 }

@@ -31,7 +31,7 @@ class Config
 
     /**
      * Uncensor lyric text in Title class fetchData()
-     * @var boolean
+     * @var bool
      * Default: true
      */
     public $uncensor = true;
@@ -40,7 +40,7 @@ class Config
      * Include api search if exaxt api match fails in Title class fetchData()
      * This setting is to include the possibilty to include the search part of the external API
      * Warning: if this is set to true it will increase search time drasticly
-     * @var boolean
+     * @var bool
      * Default: true
      */
     public $apiSearch = true;
@@ -48,7 +48,7 @@ class Config
     /**
      * Throw Exception if something goes wrong with the api call
      * True: throws Exception, false: returns empty object
-     * @var boolean
+     * @var bool
      */
     public $throwHttpExceptions = false;
 
